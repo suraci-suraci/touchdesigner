@@ -1,0 +1,3 @@
+def onOffToOn(channel, sampleIndex, val, prev):
+    op('matchscript').run()
+    return
