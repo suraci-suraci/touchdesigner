@@ -1,0 +1,36 @@
+features = op('null_features')
+table = op('audio_library')
+audio = op('audiofilein1')
+
+b = float(features[0][0])
+m = float(features[1][0])
+
+best_file = None
+best_score = 999999
+
+for i in range(1, table.numRows):
+    filename = table[i, 0].val.strip()
+    row_b = float(table[i, 1].val.strip())
+    row_m = float(table[i, 2].val.strip())
+
+    score = abs(b - row_b) + abs(m - row_m)
+
+    if score < best_score:
+        best_score = score
+        best_file = filename
+
+folder = "C:/Users/hauch/Desktop/CTC 26 SS/Final Touch Designer/Stock Resources/Audios/"
+newpath = folder + best_file
+
+print("Selected:", best_file)
+print("Score:", best_score)
+print("Path:", newpath)
+
+print("Brightness:", b)
+print("Motion:", m)
+print("Selected:", best_file)
+print("Current audio:", audio.par.file.eval())
+print("New audio:", newpath)
+
+if audio.par.file.eval() != newpath:
+    audio.par.file = newpath
