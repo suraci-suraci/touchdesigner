@@ -1,0 +1,43 @@
+import os
+
+base_folder = "C:/Users/hauch/Desktop/CTC 26 SS/Final Touch Designer/Stock Resources/Audios/"
+
+timbre_folder = base_folder + "timbre/"
+bass_folder = base_folder + "bass/"
+
+timbre_table = op('timbre_library')
+bass_table = op('bass_library')
+
+audio_exts = ['.wav', '.mp3', '.aif', '.aiff', '.flac']
+
+def is_audio_file(filename):
+    return os.path.splitext(filename)[1].lower() in audio_exts
+
+def rebuild_table(table, folder, feature_name, start_value, step_value):
+    table.clear()
+    table.appendRow(['filename', feature_name])
+
+    files = [f for f in os.listdir(folder) if is_audio_file(f)]
+    files.sort()
+
+    for i, filename in enumerate(files):
+        value = start_value + (i * step_value)
+        table.appendRow([filename, round(value, 3)])
+
+rebuild_table(
+    timbre_table,
+    timbre_folder,
+    'brightness',
+    0.6,
+    0.2
+)
+
+rebuild_table(
+    bass_table,
+    bass_folder,
+    'motion',
+    0.5,
+    0.02
+)
+
+print("Audio tables rebuilt.")
