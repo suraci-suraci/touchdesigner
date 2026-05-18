@@ -1,0 +1,57 @@
+features = op('null_features')
+
+timbre_table = op('timbre_library')
+bass_table = op('bass_library')
+
+audio_timbre = op('audiofile_timbre')
+audio_bass = op('audiofile_bass')
+
+brightness = float(features[0][0])
+motion = float(features[1][0])
+
+folder = "C:/Users/hauch/Desktop/CTC 26 SS/Final Touch Designer/Stock Resources/Audios/"
+
+
+best_timbre = None
+best_timbre_score = 999999
+
+for i in range(1, timbre_table.numRows):
+    filename = timbre_table[i, 0].val
+    target_brightness = float(timbre_table[i, 1].val)
+
+    score = abs(brightness - target_brightness)
+
+    if score < best_timbre_score:
+        best_timbre_score = score
+        best_timbre = filename
+
+
+best_bass = None
+best_bass_score = 999999
+
+for i in range(1, bass_table.numRows):
+    filename = bass_table[i, 0].val
+    target_motion = float(bass_table[i, 1].val)
+
+    score = abs(motion - target_motion)
+
+    if score < best_bass_score:
+        best_bass_score = score
+        best_bass = filename
+
+
+if best_timbre is not None:
+    timbre_path = folder + best_timbre
+
+    if audio_timbre.par.file.eval() != timbre_path:
+        audio_timbre.par.file = timbre_path
+        print("Timbre selected:", best_timbre)
+
+if best_bass is not None:
+    bass_path = folder + best_bass
+
+    if audio_bass.par.file.eval() != bass_path:
+        audio_bass.par.file = bass_path
+        print("Bass selected:", best_bass)
+
+print("Brightness:", brightness, "Motion:", motion)
